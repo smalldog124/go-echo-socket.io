@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer</title>
+
+    <!-- bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- socket.io -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+</head>
+
+<body class="p-5">
+
+    <div class="card">
+        <h5 class="card-header">Customer</h5>
+        <div class="card-body">
+            <input id="txt_order" type="text" class="form-control mb-3" placeholder="Menu">
+            <input id="txt_count" type="text" class="form-control mb-3" placeholder="Count">
+            <input id="txt_table" type="text" class="form-control mb-3" placeholder="Table">
+            <a onclick="sendOrdering()" class="btn btn-primary">Order</a>
+        </div>
+    </div>
+
+    <script>
+        const socket = io('http://localhost:3000', { transports: ['websocket'] });
+        socket.on("connect", () => {
+            console.log("ได้ไหมล่ะ");
+        })
+        function sendOrdering() {
+            var txt_order = document.querySelector("#txt_order").value;
+            var txt_count = document.querySelector("#txt_count").value;
+            var txt_table = document.querySelector("#txt_table").value;
+
+            var info = {
+                name: 'bearbug',
+                order: txt_order,
+                count: txt_count,
+                table: txt_table
+            };
+
+            console.log('Sending order:', info);
+            socket.emit('order', JSON.stringify(info));
+        };
+
+    </script>
+</body>
+
+</html>
