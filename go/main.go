@@ -37,9 +37,10 @@ func main() {
 	// Handle "order" events from clients
 	server.OnEvent("/", "order", func(s socketio.Conn, msg string) {
 		log.Println("Order received:", msg)
+		s.Emit("90", "lek->com")
 
 		// Emitting a "shop" event to all connected clients
-		server.BroadcastToRoom("/", "shop", msg)
+		//server.BroadcastToNamespace("/", "shop", msg)
 	})
 
 	// Handle WebSocket disconnections
